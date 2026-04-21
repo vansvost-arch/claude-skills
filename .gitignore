@@ -1,0 +1,18 @@
+# Never commit real credentials
+skills/*/config/config.json
+skills/*/config/service_account_key.json
+skills/*/config/defaults.env
+skills/*/config/*.env
+skills/*/config/*.key
+skills/*/config/*.pem
+
+# Runtime cache — not needed in repo
+skills/*/cache/*.json
+skills/*/cache/*.jsonl
+skills/*/cache/*.txt
+
+# OS / editor noise
+.DS_Store
+.idea/
+.vscode/
+*.swp
