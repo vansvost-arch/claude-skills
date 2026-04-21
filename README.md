@@ -5,7 +5,7 @@ Clone it once, run the installer, and Claude Code will behave identically to the
 
 ## What's included
 
-### Custom skills (31) — copied to `~/.claude/skills/`
+### Custom skills (32) — copied to `~/.claude/skills/`
 
 | Skill | What it does |
 |-------|-------------|
@@ -34,6 +34,7 @@ Clone it once, run the installer, and Claude Code will behave identically to the
 | `supplier-search` | B2B supplier research workflow |
 | `tdcompass-seo-enrichment` | SEO enrichment for TDCompass catalog |
 | `tdd` | Test-driven development deep guide |
+| `tenderplan-api` | Tenderplan (tenderplan.ru) REST API — tenders, keys, marks, comments, orgs, ЕГРЮЛ/РНП, cursors |
 | `web-artifacts-builder` | Build shareable web artifacts |
 | `webapp-testing` | Web application testing workflow |
 | `wrap` | Decision wrap-up for risky choices |
@@ -114,6 +115,31 @@ cp config/defaults.env.example config/defaults.env
 
 ### ssh-remote-connection
 No config needed — uses your existing SSH config (`~/.ssh/`).
+
+### tenderplan-api
+Requires a Tenderplan Personal Access Token (PAT). Tokens are **only creatable via the
+Tenderplan web UI** — the PAT-management API endpoints are reserved for first-party
+clients. Walkthrough:
+
+1. Log in at https://tenderplan.ru → `Настройки аккаунта` (top menu).
+2. Tab `Интеграции с сервисами` → card **OpenAPI** → button `Настроить`.
+3. Fill `Название токена`, tick `Подтверждаю разрешение на следующие действия`, then tick
+   the scope checkboxes (e.g. `resources:external` + `relations:read` + `comments:read`
+   for a read-only tender integration).
+4. Click `Сгенерировать токен` — **the string is shown once**, copy it immediately.
+
+Store it and expose it as the env var `TENDERPLAN_TOKEN`:
+```bash
+export TENDERPLAN_TOKEN="<paste>"
+```
+
+Verify the token works:
+```bash
+python3 ~/.claude/skills/tenderplan-api/scripts/tp_probe.py health
+# → "health: OK (404 as expected — token works)"
+```
+
+→ Full scope table, OAuth flows and rate-limits: `~/.claude/skills/tenderplan-api/references/auth.md`
 
 ---
 
